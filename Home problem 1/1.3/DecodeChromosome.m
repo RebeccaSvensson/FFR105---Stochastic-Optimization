@@ -1,14 +1,15 @@
-function x = DecodeChromosome(chromosome, nVariables, variableRange)
+function x = DecodeChromosome(chromosome, variablesPerChromosomes, variableRange)
     
     chromosomeLength = size(chromosome, 2);
-    nGenes = chromosomeLength/nVariables;
+    nGenes = chromosomeLength/variablesPerChromosomes;
     
-    x = zeros(1, nVariables);
-    xGeneral = -variableRange + 2*variableRange/(1-2^(-nGenes));
-    for i = 1:nVariables
+    x = zeros(1, variablesPerChromosomes);
+    xGeneral = 2*variableRange/(1-2^(-nGenes));
+    for i = 1:variablesPerChromosomes
         for j = 1:nGenes
-            x(i) = x(1) + xGeneral * (2^(-j)*chromosome(j + (i-1)*nGenes));
+            x(i) = x(i) +(2^(-j)*chromosome(j + (i-1)*nGenes));
         end
+        x(i) = x(i)*xGeneral - variableRange;
     end
 end
 

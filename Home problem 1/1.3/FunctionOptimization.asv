@@ -12,7 +12,7 @@ numberOfGenerations = 100;
 tournamentSize = 2;
 nCopies = 1;
 nRuns = 100;
-bestFitness = zeros(nRuns, 1);
+
 
 for j = 1:nRuns
     fitness = zeros(populationSize,1);
@@ -114,7 +114,6 @@ for j = 1:nRuns
         drawnow;
     end
 
-    bestFitness(j) = maximumFitness;
     minValue = 1/maximumFitness;
     disp('minimum value');
     disp(minValue);

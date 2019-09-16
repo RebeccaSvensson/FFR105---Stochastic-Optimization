@@ -9,7 +9,7 @@ function iSelected = TournamentSelect(fitness, pTournament, tournamentSize)
         tournamentPopulation(2, i) = index;
     end
    
-    [~,idx] = sort(tournamentPopulation(1,:), 'descend'); % sort just the first column
+    [~,idx] = sort(tournamentPopulation(1,:)); % sort just the first column
     sortedPop = tournamentPopulation(:,idx);
     
     iSelected = 0;
@@ -17,7 +17,7 @@ function iSelected = TournamentSelect(fitness, pTournament, tournamentSize)
     for i = 1:tournamentSize
         r = rand;
         if (r < pTournament)
-            iSelected = sortedPop(2,i);
+            iSelected = sortedPop(1,i);
             break;
         end 
     end
