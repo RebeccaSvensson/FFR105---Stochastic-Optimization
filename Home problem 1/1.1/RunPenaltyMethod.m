@@ -1,7 +1,7 @@
 
-f = (x(1)-1)^2 + 2*(x(2)-2)^2;
-g = x(1)^2 + x(2)^2 - 1; % <= 0
-mu = 0.01;
-p = mu;
+mu = 1;
+x = [1, 2];
+step_length = 1;
+threshold = 1;
 
-f_p = f + p;
+RunGradientDescent(x, mu, step_length, threshold)
