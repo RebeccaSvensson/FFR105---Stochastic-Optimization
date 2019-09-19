@@ -5,7 +5,7 @@ populationSize = 100;
 numberOfGenes = 50;
 variablesPerChromosome = 2;
 crossoverProbability = 0.8;
-mutationProbability = 0.025;
+mutationProbability = 0.05;
 tournamentSelectionParameter = 0.75;
 variableRange = 10.0;
 numberOfGenerations = 100;
@@ -102,7 +102,7 @@ for j = 1:nRuns
 
         % Insert best individual to the nCopies first positions
         tempPopulation = InsertBestIndividual(tempPopulation,...
-            tempPopulation(bestIndividualIndex,:), nCopies);
+            population(bestIndividualIndex,:), nCopies);
         population = tempPopulation;
 
         % Plot new generation
@@ -124,4 +124,4 @@ end
 
 disp('median fitness');
 disp(median(bestFitness));
-
+s
