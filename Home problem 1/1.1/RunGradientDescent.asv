@@ -9,5 +9,5 @@ while (norm(gradient) > threshold)
     x = x - step_length * gradient;
 end
 
-disp('Values of x for minima')
+disp('
 end
