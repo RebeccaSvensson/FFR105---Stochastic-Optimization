@@ -3,7 +3,7 @@ clc; clear all;
 mu = [1; 10; 100; 1000];
 x = [1; 2];
 step_length = 0.0001;
-threshold = exp(-6);
+threshold = 1e-6;
 
 x1_values = [];
 x2_values = [];
