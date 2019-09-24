@@ -15,3 +15,4 @@ for i = 1:size(mu)
 end
 
 table(mu, x1_values', x2_values', 'VariableNames', {'mu', 'x1', 'x2'})
+
