@@ -9,9 +9,9 @@ function newVelocities = UpdateVelocities(positions, velocities, particleBestPos
     w = inertiaWeight;
     
     for i = 1:numberOfParticles
+        r = rand;
+        q = rand;
         for j = 1:numberOfDimensions
-            r = rand;
-            q = rand;
             cognitiveComponent = c1*q*((particleBestPositions(i,j) - positions(i,j))/deltaT);
             socialComponent = c2*r*((swarmBestPosition(j)-positions(i,j))/deltaT);
             

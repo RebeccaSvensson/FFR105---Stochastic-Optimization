@@ -1,5 +1,5 @@
-function visibility = GetVisibility(cityLocation)
-
+ function visibility = GetVisibility(cityLocation)
+% 
 %     numberOfCities = size(cityLocation, 1);
 %     visibility = zeros(numberOfCities);
 %     

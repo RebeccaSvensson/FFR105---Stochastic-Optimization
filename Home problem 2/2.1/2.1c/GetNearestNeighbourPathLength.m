@@ -4,7 +4,7 @@ function nearestNeighbourPathLength = GetNearestNeighbourPathLength(cityLocation
     numberOfCities = length(tmpCityLocation);
     
     startCityIndex = randi(numberOfCities);
-    startCityCoordinates = tmpCityLocation(1,:);
+    startCityCoordinates = tmpCityLocation(startCityIndex,:);
 
     currentCityIndex = startCityIndex;
     currentCityCoordinates = startCityCoordinates;
@@ -44,5 +44,7 @@ function nearestNeighbourPathLength = GetNearestNeighbourPathLength(cityLocation
 
     end
     
+    connectingDistance = norm(currentCityCoordinates - startCityCoordinates);
+    nearestNeighbourPathLength = nearestNeighbourPathLength + connectingDistance;
     
 end

@@ -5,7 +5,8 @@ minVal = -5.0;
 maxVal = 5.0;
 alpha = 1;
 deltaT = 1;
-maxVelocity = 50; 
+maxVelocity = (maxVal-minVal)/deltaT; 
+
 
 for n = 1:100
     
@@ -23,10 +24,10 @@ evaluatedIndividuals = zeros(numberOfParticles, 1);
 inertiaWeight = 1.4;
 beta = 0.99;
 
-nRuns = 1000+000;
+nRuns = 100000;
 
     for k = 1:nRuns
-        if inertiaWeight > 0.35
+        if inertiaWeight > 0.3
             inertiaWeight = inertiaWeight*beta;
         end
         for i = 1:numberOfParticles
