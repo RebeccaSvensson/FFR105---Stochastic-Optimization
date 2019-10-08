@@ -18,8 +18,8 @@ numberOfCities = length(cityLocation);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 numberOfAnts = 50;  
 alpha = 1.0;        
-beta = 5.0;         
-rho = 0.5;          
+beta = 4.0;         
+rho = 0.4;          
 
 nearestNeighbourPathLength = GetNearestNeighbourPathLength(cityLocation); 
 tau0 = numberOfAnts/nearestNeighbourPathLength;

@@ -16,4 +16,9 @@ function pathLength = GetPathLength(path,cityLocation)
         currentCityIndex = nextCityIndex;
         currentCityCoordinates = nextCityCoordinates;
     end
+    
+    nextCityIndex = path(1);
+    nextCityCoordinates = cityLocation(nextCityIndex,:);
+    
+    pathLength = pathLength + norm(nextCityCoordinates-currentCityCoordinates);
 end
