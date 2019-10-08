@@ -21,12 +21,14 @@ velocities = InitializeVelocities(numberOfParticles, minVal, maxVal, alpha, delt
 evaluatedIndividuals = zeros(numberOfParticles, 1);
 
 inertiaWeight = 1.4;
-beta = 0.9;
+beta = 0.99;
 
-nRuns = 1000000;
-
+nRuns = 1000+000;
 
     for k = 1:nRuns
+        if inertiaWeight > 0.35
+            inertiaWeight = inertiaWeight*beta;
+        end
         for i = 1:numberOfParticles
             x = positions(i, 1);
             y = positions(i, 2);

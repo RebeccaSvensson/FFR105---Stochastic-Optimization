@@ -11,12 +11,12 @@ function deltaPheromoneLevel = ComputeDeltaPheromoneLevels(pathCollection,pathLe
         for i = 1:numberOfCities-1
             currentCityIndex = path(i);
             nextCityIndex = path(i+1);
-            deltaPheromoneLevel(nextCityIndex,currentCityIndex) = deltaPheromoneLevel(nextCityIndex,currentCityIndex) + pathLength;   
+            deltaPheromoneLevel(nextCityIndex,currentCityIndex) = deltaPheromoneLevel(nextCityIndex,currentCityIndex) + 1/pathLength;   
         end
         
         lastCityIndex = path(end);
         startCityIndex = path(1);
-        deltaPheromoneLevel(startCityIndex,lastCityIndex) = deltaPheromoneLevel(startCityIndex,lastCityIndex) + pathLength;   
+        deltaPheromoneLevel(startCityIndex,lastCityIndex) = deltaPheromoneLevel(startCityIndex,lastCityIndex) + 1/pathLength;   
         
     end
 end

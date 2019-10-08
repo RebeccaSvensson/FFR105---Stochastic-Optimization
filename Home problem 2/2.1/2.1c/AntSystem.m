@@ -7,19 +7,20 @@
 clear all;
 clc;
 
+addpath('../TSPgraphics')
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Data
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 cityLocation = LoadCityLocations();
 numberOfCities = length(cityLocation);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-numberOfAnts = 50;  
+numberOfAnts = 30;  
 alpha = 1.0;        
-beta = 4.0;         
-rho = 0.4;          
+beta = 3.0;         
+rho = 0.5;          
 
 nearestNeighbourPathLength = GetNearestNeighbourPathLength(cityLocation); 
 tau0 = numberOfAnts/nearestNeighbourPathLength;

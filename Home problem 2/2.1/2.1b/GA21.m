@@ -69,7 +69,6 @@ for j = 1:nRuns
         globalBestPath = bestPath;
 
         PlotPath(connection,cityLocation,bestPath);
-
         pathLength = 1/globalMaximumFitness;
         disp(sprintf('New shortest path found on run %d. Path length is %.5f', j, pathLength));
     end

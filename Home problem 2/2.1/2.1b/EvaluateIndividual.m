@@ -15,7 +15,7 @@ function fitness = EvaluateIndividual(chromosome)
         pathLength = pathLength + norm(distance);
         currentCityCoordinates = nextCityCoordinates;
     end
-
+    
     distance = currentCityCoordinates - firstCityCoordinates;
     pathLength = pathLength + norm(distance);
     
