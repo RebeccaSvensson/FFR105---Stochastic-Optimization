@@ -1,28 +1,27 @@
 clear all; clc; clf;
 
 % Variable initialization
-populationSize = 100;
+populationSize = 40;
 nGenes = 30;
-mutationProbability = 1/100;
+mutationProbability = 3;
 tournamentSelectionParameter = 0.75;
 crossoverProbability = 0.8;
 numberOfGenerations = 50000;
 tournamentSize = 6;
 nCopies = 3;
-nRuns = 1;
+nRuns = 10;
 cMax = intmax;
 minChromosomeLength = 4;
 maxChromosomeLength = 100;
-Dmin = 0.5;
-Dmax = 0.5;
+Dmin = 0.73;
+Dmax = 0.73;
 alpha = 1.1;
 % Initialize registers
-constantRegister = [3, 10, -2, -5];
+constantRegister = [1, -1, -3];
 numberOfConstantRegisters = length(constantRegister);
 numberOfVariableRegisters = 3;
 numberOfOperands = numberOfVariableRegisters + numberOfConstantRegisters;
 variableRegister = zeros(numberOfVariableRegisters, 1);
-
 
 operators = ['+', '-', '*', '/'];
 numberOfOperators = length(operators);
@@ -38,6 +37,10 @@ hold on
 dataFunctionHandle = plot(functionData(:,1), functionData(:,2));
 chromosomeHandle = plot(functionData(:,1),zeros(1,201));
 
+nMaxSteadyIterations = 3000;
+maxFitnessCurrentGen = 0;
+maxFitnessLastGen = 0;
+nSteadyIterations = 0;
 for j = 1:nRuns
     j
     fitness = zeros(populationSize,1);
@@ -50,11 +53,28 @@ for j = 1:nRuns
         maximumFitness = 0.0; % Assumes non-negative fitness values!
         bestChromosome = zeros(1,nGenes); 
         bestIndividualIndex = 0;
-
+        
+        if maximumFitness == inf
+            matlab.io.saveVariablesToScript('BestChromosome.m', 'bestChromosome');
+        end
+        if maxFitnessCurrentGen == maxFitnessLastGen
+            nSteadyIterations = nSteadyIterations + 1;
+        else
+            nSteadyIterations = 0;
+        end
+        
+        maxFitnessLastGen = maxFitnessCurrentGen;
+        if nSteadyIterations == nMaxSteadyIterations
+            break
+        end
+        
         % Calculate fitness score for entire population
         for i = 1:populationSize
             chromosome = population(i).Chromosome;
             errors = EvaluateIndividual(chromosome, functionData, constantRegister, variableRegister, operators, cMax);
+            if errors < 0.01
+                matlab.io.saveVariablesToScript('BestChromosome.m', 'bestChromosome');
+            end
             chromosomeLength = length(chromosome);
             penalty = 1;
             if chromosomeLength > maxChromosomeLength
@@ -72,6 +92,8 @@ for j = 1:nRuns
                     end
                     set(chromosomeHandle, 'YData', yVals)
                     drawnow
+                    
+                    maxFitnessCurrentGen = maximumFitness;
                 end
         end
         
@@ -108,7 +130,9 @@ for j = 1:nRuns
         % Mutate new generation
         for i = 1:populationSize
             originalChromosome = tempPopulation(i).Chromosome;
-            mutatedChromosome = Mutate(originalChromosome, mutationProbability, numberOfVariableRegisters, numberOfConstantRegisters, numberOfOperators);
+            chromosomeLength = length(originalChromosome);
+            individualMutationProbability = mutationProbability / chromosomeLength;
+            mutatedChromosome = Mutate(originalChromosome, individualMutationProbability, numberOfVariableRegisters, numberOfConstantRegisters, numberOfOperators);
             tempPopulation(i).Chromosome = mutatedChromosome;
         end
         

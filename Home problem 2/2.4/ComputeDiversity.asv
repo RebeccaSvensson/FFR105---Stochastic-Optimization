@@ -1,0 +1,37 @@
+function diversity = ComputeDiversity(population, numberOfVariableRegisters, numberOfConstantRegisters, numberOfOperators)
+
+    populationSize = length(population);
+
+%     totalDistance = 0;
+%     counterI = 0;
+%     counterJ = 0;
+%     for i = 1:populationSize-1
+%         chromosome1 = population(i).Chromosome;
+%         counterI = counterI + 1;
+%         for j = 2:populationSize
+%             chromosome2 = population(j).Chromosome;
+%             distance = ComputeDistance(chromosome1, chromosome2, numberOfVariableRegisters, numberOfConstantRegisters, numberOfOperators);              
+%             totalDistance = totalDistance + distance;
+%             counterJ = counterJ + 1;
+%         end
+%     end
+%     tot = (populationSize * (populationSize-1));
+%     diversity = 2/tot * totalDistance;
+    totalDistance = 0;
+
+    for i = 1:populationSize-1
+        for j = i+1:populationSize
+            individual1 = population(i);
+            individual2 = population(j);
+            chromosome1 = individual1.Chromosome;
+            chromosome2 = individual2.Chromosome;
+            
+            distance = CalculateDistance(chromosome1, chromosome2);
+
+            totalDistance = totalDistance + distance;
+            counter = counter+1;
+        end
+    end
+    
+    diversity = 2 / (populationSize * (populationSize - 1)) * totalDistance;
+end

@@ -3,26 +3,25 @@ clear all; clc; clf;
 % Variable initialization
 populationSize = 40;
 nGenes = 30;
-mutationProbability = 0.025;
+mutationProbability = 1;
 tournamentSelectionParameter = 0.75;
 crossoverProbability = 0.8;
 numberOfGenerations = 50000;
 tournamentSize = 6;
-nCopies = 2;
-nRuns = 1;
+nCopies = 3;
+nRuns = 10;
 cMax = intmax;
 minChromosomeLength = 4;
 maxChromosomeLength = 100;
-Dmin = 0.25;
-Dmax = 0.25;
+Dmin = 0.72;
+Dmax = 0.72;
 alpha = 1.1;
 % Initialize registers
-
+constantRegister = [1, -1, -3];
+numberOfConstantRegisters = length(constantRegister);
 numberOfVariableRegisters = 3;
-numberOfConstantRegisters = 3;
 numberOfOperands = numberOfVariableRegisters + numberOfConstantRegisters;
 variableRegister = zeros(numberOfVariableRegisters, 1);
-constantRegister = [1, 5, -10];
 
 operators = ['+', '-', '*', '/'];
 numberOfOperators = length(operators);
@@ -38,6 +37,10 @@ hold on
 dataFunctionHandle = plot(functionData(:,1), functionData(:,2));
 chromosomeHandle = plot(functionData(:,1),zeros(1,201));
 
+nMaxSteadyIterations = 3000;
+maxFitnessCurrentGen = 0;
+maxFitnessLastGen = 0;
+nSteadyIterations = 0;
 for j = 1:nRuns
     j
     fitness = zeros(populationSize,1);
@@ -50,11 +53,28 @@ for j = 1:nRuns
         maximumFitness = 0.0; % Assumes non-negative fitness values!
         bestChromosome = zeros(1,nGenes); 
         bestIndividualIndex = 0;
-
+        
+        if maximumFitness == inf
+            matlab.io.saveVariablesToScript('BestChromosome.m', 'bestChromosome');
+        end
+        if maxFitnessCurrentGen == maxFitnessLastGen
+            nSteadyIterations = nSteadyIterations + 1;
+        else
+            nSteadyIterations = 0;
+        end
+        
+        maxFitnessLastGen = maxFitnessCurrentGen;
+        if nSteadyIterations == nMaxSteadyIterations
+            break
+        end
+        
         % Calculate fitness score for entire population
         for i = 1:populationSize
             chromosome = population(i).Chromosome;
             errors = EvaluateIndividual(chromosome, functionData, constantRegister, variableRegister, operators, cMax);
+            if errors < 0.01
+                matlab.io.saveVariablesToScript('BestChromosome.m', 'bestChromosome');
+            end
             chromosomeLength = length(chromosome);
             penalty = 1;
             if chromosomeLength > maxChromosomeLength
@@ -69,10 +89,11 @@ for j = 1:nRuns
                     for k = 1:nDataPoints
                         xVal = functionData(k,1);
                         yVals(k) = GetEstimate(chromosome, xVal, numberOfVariableRegisters, constantRegister, operators, cMax);
-
                     end
                     set(chromosomeHandle, 'YData', yVals)
                     drawnow
+                    
+                    maxFitnessCurrentGen = maximumFitness;
                 end
         end
         
@@ -96,16 +117,22 @@ for j = 1:nRuns
             end 
         
         % Calculate diversity
-        diversity = ComputeDiversity(population, numberOfVariableRegister, numberOfConstantRegister, numberOfOperands);
+        diversity = ComputeDiversity(population, numberOfVariableRegisters, numberOfConstantRegisters, numberOfOperands);
         
         if diversity < Dmin
-            mutationRate = mutationRate*alpha;
+            mutationProbability = mutationProbability*alpha;
         elseif diversity == Dmin
-            
+            mutationProbability = mutationProbability;
+        elseif diversity > Dmax
+            mutationProbability = mutationProbability/alpha;
+        end  
+        
         % Mutate new generation
         for i = 1:populationSize
             originalChromosome = tempPopulation(i).Chromosome;
-            mutatedChromosome = Mutate(originalChromosome, mutationProbability, numberOfVariableRegisters, numberOfConstantRegisters, numberOfOperators);
+            chromosomeLength = length(originalChromosome);
+            individualMutationProbability = mutationProbability / chromosomeLength;
+            mutatedChromosome = Mutate(originalChromosome, individualMutationProbability, numberOfVariableRegisters, numberOfConstantRegisters, numberOfOperators);
             tempPopulation(i).Chromosome = mutatedChromosome;
         end
         
