@@ -1,10 +1,8 @@
-function meanDistance = ComputeDistance(chromosome1, chromosome2, numberOfVariableRegisters, numberOfConstantRegisters, numberOfOperators)
+function meanDistance = ComputeDistance(chromosome1, chromosome2)
     
     chromosomeLength1 = length(chromosome1);
     chromosomeLength2 = length(chromosome2);
     maxLength = max(chromosomeLength1, chromosomeLength2);
-    
-    numberOfOperands = numberOfVariableRegisters + numberOfConstantRegisters;
     
     totalDistance = 0;
         
@@ -24,18 +22,8 @@ function meanDistance = ComputeDistance(chromosome1, chromosome2, numberOfVariab
         else 
             diff = 1;
         end
-       % diff = abs(gene1 - gene2);
-        range = 1;
-        
-%         if mod(k-1,4) == 0
-%             range = numberOfOperators;
-%         elseif mod(k-2,4) == 0
-%             range = numberOfVariableRegisters;
-%         elseif mod(k-3,4) == 0 || mod(k-4,4) == 0
-%             range = numberOfOperands;
-%         end
-        
-        distance = diff / range;
+
+        distance = diff;
         totalDistance = totalDistance + distance;
     end
     

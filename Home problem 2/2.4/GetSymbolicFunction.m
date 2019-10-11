@@ -1,4 +1,4 @@
-function fString = GetSymbolicFunction(chromosome, numberOfVariables, constantRegister, operators, cMax)
+function f = GetSymbolicFunction(chromosome, numberOfVariables, constantRegister, operators, cMax)
 
     nGenes = length(chromosome);
     
@@ -35,5 +35,5 @@ function fString = GetSymbolicFunction(chromosome, numberOfVariables, constantRe
 
     end
     
-    fString = simplify(operands(1));
+    f = simplify(operands(1));
 end

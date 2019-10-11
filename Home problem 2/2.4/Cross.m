@@ -25,6 +25,7 @@ function [newChromosome1, newChromosome2] = Cross(chromosome1, chromosome2)
         crossoverPoint21 = crossoverPoint22;
         crossoverPoint22 = tmpVal;
     end
+    
     % keep first bit of both chromosomes
     newChromosome1(1:crossoverPoint11-1) = chromosome1(1:crossoverPoint11-1);
     newChromosome2(1:crossoverPoint21-1) = chromosome2(1:crossoverPoint21-1);
