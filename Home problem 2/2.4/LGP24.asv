@@ -54,7 +54,6 @@ for j = 1:nRuns
             errors = EvaluateIndividual(chromosome, functionData, constantRegister, variableRegister, operators, cMax);
             if chromosome > maxChromosomeLength
                 
-                penalty = 
             fitness(i) = 1/errors;
             % Save info about best individual
                 if (fitness(i) > maximumFitness)

@@ -3,7 +3,7 @@ function pathLength = GetPathLength(path,cityLocation)
     numberOfCities = length(path);
     
     currentCityIndex = path(1);
-    currentCityCoordinates = cityLocation(1, :);
+    currentCityCoordinates = cityLocation(currentCityIndex, :);
     
     pathLength = 0;
     
@@ -11,7 +11,8 @@ function pathLength = GetPathLength(path,cityLocation)
         nextCityIndex = path(i);
         nextCityCoordinates = cityLocation(nextCityIndex,:);
         
-        pathLength = pathLength + norm(nextCityCoordinates-currentCityCoordinates);
+        edgeLength = norm(nextCityCoordinates-currentCityCoordinates);
+        pathLength = pathLength + edgeLength;
        
         currentCityIndex = nextCityIndex;
         currentCityCoordinates = nextCityCoordinates;
@@ -19,7 +20,7 @@ function pathLength = GetPathLength(path,cityLocation)
     
     nextCityIndex = path(1);
     nextCityCoordinates = cityLocation(nextCityIndex,:);
-    
-    pathLength = pathLength + norm(nextCityCoordinates-currentCityCoordinates);
+    edgeLength = norm(nextCityCoordinates-currentCityCoordinates);
+    pathLength = pathLength + edgeLength;
     
 end

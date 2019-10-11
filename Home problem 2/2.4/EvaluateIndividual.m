@@ -1,4 +1,4 @@
-function fitness = EvaluateIndividual(chromosome, functionData, constantRegister, variableRegister, operators, cMax)
+function errors = EvaluateIndividual(chromosome, functionData, constantRegister, variableRegister, operators, cMax)
     
     nGenes = length(chromosome);
     numberOfVariables = length(variableRegister);
@@ -11,44 +11,37 @@ function fitness = EvaluateIndividual(chromosome, functionData, constantRegister
         tmpVariableRegister(1) = functionData(k, 1);
         
         operands = [tmpVariableRegister, constantRegister];
-        for j = 1:nGenes
-            value = chromosome(j);
-            if value == 0
-                break;
-            end
-            
-            if mod(j-1,4) == 0
-                operator = operators(value);
-            elseif mod(j-2,4) == 0
-                destination = tmpVariableRegister(value);
-            elseif mod(j-3,4) == 0
-                operand1 = operands(value);
-            elseif mod(j,4) == 0
-                operand2 = operands(value);
-            end
+        for j = 1:4:nGenes
+            operatorIndex = chromosome(j);
+            destinationIndex = chromosome(j+1);
+            operand1Index = chromosome(j+2);
+            operand2Index = chromosome(j+3);
 
-            if mod(j,4) == 0
-                if operator == '+'
-                    destination = operand1 + operand2;
-                elseif operator == '-'
-                    destination = operand1 - operand2;
-                elseif operator == '*'
-                    destination = operand1 * operand2;
-                elseif operator == '/'
-                    if operand2 == 0
-                        destination = cMax;
-                    else
-                        destination = operand1 / operand2;
-                    end
+            operator = operators(operatorIndex);
+          %  destination = tmpVariableRegister(destinationIndex);
+            operand1 = operands(operand1Index);
+            operand2 = operands(operand2Index);
+          
+            if operator == '+'
+                tmpVariableRegister(destinationIndex) = operand1 + operand2;
+            elseif operator == '-'
+                tmpVariableRegister(destinationIndex) = operand1 - operand2;
+            elseif operator == '*'
+                tmpVariableRegister(destinationIndex) = operand1 * operand2;
+            elseif operator == '/'
+                if operand2 == 0
+                    tmpVariableRegister(destinationIndex) = cMax;
+                else
+                    tmpVariableRegister(destinationIndex) = operand1 / operand2;
                 end
-                
-                estimates(k) = destination;
             end
 
         end
+        
+        estimates(k) = tmpVariableRegister(1);
     end
     
     errors = ComputeErrors(estimates, functionData);
-    
-    fitness = 1/errors;
+   
+   
 end

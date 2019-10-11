@@ -1,6 +1,6 @@
 function mutatedChromosome = Mutate(chromosome, mutationProbability, numberOfVariableRegisters, numberOfConstantRegisters, numberOfOperators)
 
-    nGenes = size(chromosome, 2);
+    nGenes = length(chromosome);
     mutatedChromosome = chromosome;
     numberOfOperands = numberOfVariableRegisters + numberOfConstantRegisters;
     

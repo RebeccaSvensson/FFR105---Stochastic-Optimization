@@ -4,7 +4,7 @@ function newPopulation = InsertBestIndividual(population, bestIndividual, nCopie
     
     for i = 1:nCopies
         chromosomeLength = length(bestIndividual);
-        newPopulation(i,1:chromosomeLength) = bestIndividual;
+        newPopulation(i).Chromosome = bestIndividual;
     end
     
 end
