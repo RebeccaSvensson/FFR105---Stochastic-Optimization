@@ -13,8 +13,8 @@ nRuns = 10;
 cMax = intmax;
 minChromosomeLength = 4;
 maxChromosomeLength = 100;
-Dmin = 0.73;
-Dmax = 0.73;
+Dmin = 0.69;
+Dmax = 0.69;
 alpha = 1.1;
 % Initialize registers
 constantRegister = [1, -1, -3];
@@ -37,7 +37,7 @@ hold on
 dataFunctionHandle = plot(functionData(:,1), functionData(:,2));
 chromosomeHandle = plot(functionData(:,1),zeros(1,201));
 
-nMaxSteadyIterations = 3000;
+nMaxSteadyIterations = 9000;
 maxFitnessCurrentGen = 0;
 maxFitnessLastGen = 0;
 nSteadyIterations = 0;
