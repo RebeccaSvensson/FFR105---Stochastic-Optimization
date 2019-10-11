@@ -1,24 +1,47 @@
-numberOfVariableRegisters = 6;
-numberOfConstantRegisters = 6;
+clf;
+
+numberOfVariableRegisters = 3;
+numberOfConstantRegisters = 3;
+numberOfVariables = 6;
 numberOfOperands = numberOfVariableRegisters + numberOfConstantRegisters;
 variableRegister = zeros(numberOfVariableRegisters, 1);
-constantRegister = [1, 5, -10, -1, 4, 7];
+constantRegister = [1, -1, -3];
 
 operators = ['+', '-', '*', '/'];
 numberOfOperators = length(operators);
 
 functionData = LoadFunctionData();
-cMax = 1;
+cMax = intmax;
 
-%chromosome = [3,4,2,3,2,5,5,8,3,2,8,7,2,1,1,12,4,2,1,10,4,2,8,8,4,4,11,7,3,1,3,1,4,2,10,1,2,6,1,10,3,2,10,9,4,5,5,9,2,6,10,11,1,3,7,9,2,3,6,4,2,1,9,5];
-population =[];
-chromosome1 = [3,4,2,3,2,5,5,8];
-chromosome2 = [4,2,3,2,5,4,8,3];
-chromosome3 = [2,3,1,1,10,1,2,2];
-individual1 = struct('Chromosome', chromosome1);
-population = [population individual1];
-individual2 = struct('Chromosome', chromosome2);
-population = [population individual2];
-individual3 = struct('Chromosome', chromosome3);
-population = [population individual3];
-ComputeDiversity(population, numberOfVariableRegisters, numberOfConstantRegisters, numberOfOperators)
+
+%chromosome = [2,2,6,2,2,2,5,3,2,3,1,2,4,3,3,2,4,2,4,4,1,2,6,2,4,1,6,1,2,2,5,3,1,2,6,2,1,1,6,3,2,2,5,5,1,2,5,3,4,2,5,3,2,2,2,3,4,3,3,1,4,3,3,4,2,2,2,3,4,3,3,2,2,2,2,3,1,3,1,2,4,3,3,2,1,1,6,3,2,2,5,4,2,2,5,4,4,1,3,2];
+chromosome = [1 2 1 1 1 2 5 1 3 2 6 2 4 2 3 1 1 2 1 3 3 3 2 1 4 2 2 ...
+                  2 4 2 5 1 4 1 5 2 1 3 4 3 2 2 2 3 2 3 4 3 1 3 4 2 1 3 ...
+                  2 1 1 3 4 2 1 2 2 3 4 2 5 1 1 2 1 3 1 3 5 1 1 3 4 3 4 ...
+                  1 4 2 4 2 5 1 1 3 4 3 1 2 1 3 4 1 4 2];
+%chromosome = [1,2,1,4,3,3,1,5,3,1,2,3,3,3,3,3,1,3,2,3,4,2,1,3];
+f = GetStringFunctions(chromosome, numberOfVariableRegisters, constantRegister, operators, cMax)
+%f = DecodeChromosome(chromosome, numberOfVariables, constantRegister, cMax);
+figureHandle = figure(1);
+hold on
+dataFunctionHandle = plot(functionData(:,1), functionData(:,2));
+chromosomeHandle = plot(functionData(:,1),zeros(1,201));
+
+for k = 1:nDataPoints
+    xVal = functionData(k,1);
+    yVals(k) = GetEstimate(chromosome, xVal, numberOfVariableRegisters, constantRegister, operators, cMax);
+end
+set(dataFunctionHandle, 'YData', yVals)
+drawnow
+
+syms x
+%fSym = str2sym(fString)
+%f = simplify(fSym)
+
+xVal = functionData(:,1);
+yVal = 0;
+for i = 1:length(xVal)
+    x = xVal(i);
+    yVal(i) = subs(f, x);
+end
+set(chromosomeHandle, 'YData', yVal)

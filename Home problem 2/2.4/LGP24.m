@@ -37,7 +37,7 @@ hold on
 dataFunctionHandle = plot(functionData(:,1), functionData(:,2));
 chromosomeHandle = plot(functionData(:,1),zeros(1,201));
 
-nMaxSteadyIterations = 9000;
+nMaxSteadyIterations = 1500;
 maxFitnessCurrentGen = 0;
 maxFitnessLastGen = 0;
 nSteadyIterations = 0;
@@ -47,7 +47,8 @@ for j = 1:nRuns
 
     % Initialize population
     population = InitializePopulation(populationSize, minChromosomeLength, maxChromosomeLength, numberOfVariableRegisters, numberOfConstantRegisters, numberOfOperators);
-
+    foundFunction = 0;
+    
     for iGeneration = 1:numberOfGenerations
         iGeneration
         maximumFitness = 0.0; % Assumes non-negative fitness values!
@@ -55,7 +56,7 @@ for j = 1:nRuns
         bestIndividualIndex = 0;
         
         if maximumFitness == inf
-            matlab.io.saveVariablesToScript('BestChromosome.m', 'bestChromosome');
+            matlab.io.saveVariablesToScript('BestChromosomeInf.m', 'bestChromosome');
         end
         if maxFitnessCurrentGen == maxFitnessLastGen
             nSteadyIterations = nSteadyIterations + 1;
@@ -68,12 +69,21 @@ for j = 1:nRuns
             break
         end
         
+        if foundFunction == 1
+            if maxFitnessCurrentGen < maxFitnessLastGen
+                matlab.io.saveVariablesToScript('BestChromosomeNew.m', 'bestChromosome');
+            end
+        end
+                
         % Calculate fitness score for entire population
         for i = 1:populationSize
             chromosome = population(i).Chromosome;
             errors = EvaluateIndividual(chromosome, functionData, constantRegister, variableRegister, operators, cMax);
-            if errors < 0.01
-                matlab.io.saveVariablesToScript('BestChromosome.m', 'bestChromosome');
+            if foundFunction == 0
+                if errors < 0.01
+                    matlab.io.saveVariablesToScript('BestChromosomeNew.m', 'bestChromosome');
+                    foundFunction = 1;
+                end
             end
             chromosomeLength = length(chromosome);
             penalty = 1;
@@ -142,9 +152,8 @@ for j = 1:nRuns
             bestIndividual, nCopies);
         population = tempPopulation;
         
-        if mod(iGeneration, 100)
-            maximumFitness
-        end
+        maximumFitness
+
         
     end
     
