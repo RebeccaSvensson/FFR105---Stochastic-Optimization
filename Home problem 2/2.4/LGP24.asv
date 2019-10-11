@@ -13,6 +13,9 @@ nRuns = 1;
 cMax = intmax;
 minChromosomeLength = 4;
 maxChromosomeLength = 100;
+Dmin = 0.25;
+Dmax = 0.25;
+alpha = 1.1;
 % Initialize registers
 
 numberOfVariableRegisters = 3;
@@ -30,10 +33,10 @@ nDataPoints = length(functionData);
 globalMaximumFitness = 0;
 globalbestChromosome = zeros(1,nGenes); 
 
-figureHandle = figure(1)
+figureHandle = figure(1);
 hold on
-dataFunctionHandle = plot(functionData(:,1), functionData(:,2))
-chromosomeHandle = plot(functionData(:,1),zeros(1,201))
+dataFunctionHandle = plot(functionData(:,1), functionData(:,2));
+chromosomeHandle = plot(functionData(:,1),zeros(1,201));
 
 for j = 1:nRuns
     j
@@ -52,16 +55,21 @@ for j = 1:nRuns
         for i = 1:populationSize
             chromosome = population(i).Chromosome;
             errors = EvaluateIndividual(chromosome, functionData, constantRegister, variableRegister, operators, cMax);
-            if chromosome > maxChromosomeLength
-                
-            fitness(i) = 1/errors;
+            chromosomeLength = length(chromosome);
+            penalty = 1;
+            if chromosomeLength > maxChromosomeLength
+                penalty = exp(chromosomeLength-maxChromosomeLength);
+            end
+            fitness(i) = 1/errors * 1/penalty;
             % Save info about best individual
                 if (fitness(i) > maximumFitness)
                     maximumFitness = fitness(i);
                     bestIndividualIndex = i;
                     bestChromosome = chromosome;
-                    for i = 1:nDataPoints
-                        yVals(i) = EvaluateIndividual(bestChromosome, functionData, constantRegister, variableRegister, operators, cMax);
+                    for k = 1:nDataPoints
+                        xVal = functionData(k,1);
+                        yVals(k) = GetEstimate(chromosome, xVal, numberOfVariableRegisters, constantRegister, operators, cMax);
+
                     end
                     set(chromosomeHandle, 'YData', yVals)
                     drawnow
@@ -86,6 +94,13 @@ for j = 1:nRuns
                     tempPopulation(i+1).Chromosome = chromosome2;
                 end
             end 
+        
+        % Calculate diversity
+        diversity = ComputeDiversity(population, numberOfVariableRegister, numberOfConstantRegister, numberOfOperands);
+        
+        if diversity < Dmin
+            mutationRate = mutationRate*alpha;
+        elseif diversity == Dmin
             
         % Mutate new generation
         for i = 1:populationSize

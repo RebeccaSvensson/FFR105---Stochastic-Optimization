@@ -1,25 +1,28 @@
 clear all; clc; clf;
 
 % Variable initialization
-populationSize = 40;
+populationSize = 100;
 nGenes = 30;
-mutationProbability = 0.025;
+mutationProbability = 1/100;
 tournamentSelectionParameter = 0.75;
 crossoverProbability = 0.8;
 numberOfGenerations = 50000;
 tournamentSize = 6;
-nCopies = 2;
+nCopies = 3;
 nRuns = 1;
 cMax = intmax;
 minChromosomeLength = 4;
 maxChromosomeLength = 100;
+Dmin = 0.5;
+Dmax = 0.5;
+alpha = 1.1;
 % Initialize registers
-
+constantRegister = [3, 10, -2, -5];
+numberOfConstantRegisters = length(constantRegister);
 numberOfVariableRegisters = 3;
-numberOfConstantRegisters = 3;
 numberOfOperands = numberOfVariableRegisters + numberOfConstantRegisters;
 variableRegister = zeros(numberOfVariableRegisters, 1);
-constantRegister = [1, 5, -10];
+
 
 operators = ['+', '-', '*', '/'];
 numberOfOperators = length(operators);
@@ -30,10 +33,10 @@ nDataPoints = length(functionData);
 globalMaximumFitness = 0;
 globalbestChromosome = zeros(1,nGenes); 
 
-figureHandle = figure(1)
+figureHandle = figure(1);
 hold on
-dataFunctionHandle = plot(functionData(:,1), functionData(:,2))
-chromosomeHandle = plot(functionData(:,1),zeros(1,201))
+dataFunctionHandle = plot(functionData(:,1), functionData(:,2));
+chromosomeHandle = plot(functionData(:,1),zeros(1,201));
 
 for j = 1:nRuns
     j
@@ -52,17 +55,20 @@ for j = 1:nRuns
         for i = 1:populationSize
             chromosome = population(i).Chromosome;
             errors = EvaluateIndividual(chromosome, functionData, constantRegister, variableRegister, operators, cMax);
-            if chromosome > maxChromosomeLength
-                
-                penalty = 
-            fitness(i) = 1/errors;
+            chromosomeLength = length(chromosome);
+            penalty = 1;
+            if chromosomeLength > maxChromosomeLength
+                penalty = exp(chromosomeLength-maxChromosomeLength);
+            end
+            fitness(i) = 1/errors * 1/penalty;
             % Save info about best individual
                 if (fitness(i) > maximumFitness)
                     maximumFitness = fitness(i);
                     bestIndividualIndex = i;
                     bestChromosome = chromosome;
-                    for i = 1:nDataPoints
-                        yVals(i) = EvaluateIndividual(bestChromosome, functionData, constantRegister, variableRegister, operators, cMax);
+                    for k = 1:nDataPoints
+                        xVal = functionData(k,1);
+                        yVals(k) = GetEstimate(chromosome, xVal, numberOfVariableRegisters, constantRegister, operators, cMax);
                     end
                     set(chromosomeHandle, 'YData', yVals)
                     drawnow
@@ -87,7 +93,18 @@ for j = 1:nRuns
                     tempPopulation(i+1).Chromosome = chromosome2;
                 end
             end 
-            
+        
+        % Calculate diversity
+        diversity = ComputeDiversity(population, numberOfVariableRegisters, numberOfConstantRegisters, numberOfOperands);
+        
+        if diversity < Dmin
+            mutationProbability = mutationProbability*alpha;
+        elseif diversity == Dmin
+            mutationProbability = mutationProbability;
+        elseif diversity > Dmax
+            mutationProbability = mutationProbability/alpha;
+        end  
+        
         % Mutate new generation
         for i = 1:populationSize
             originalChromosome = tempPopulation(i).Chromosome;

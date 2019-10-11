@@ -6,5 +6,5 @@ function error = ComputeErrors(estimates, functionData)
     
     sumVal = sum((estimates - fValues).^2);
     
-    error = 1/nDataPoints * sumVal;
+    error = sqrt(1/nDataPoints * sumVal);
 end
