@@ -12,4 +12,8 @@ function errors = EvaluateIndividual(chromosome, functionData, constantRegister,
     
     errors = ComputeErrors(estimates, functionData);
    
+    if isnan(errors) || isinf(errors)
+        errors = intmax;
+    end
+    
 end

@@ -1,15 +1,17 @@
 clear all; clc; clf;
 
+addpath('../TSPgraphics')
+
 % Variable initialization
 populationSize = 40;
 cityLocation = LoadCityLocations;
 numberOfCities = size(cityLocation,1);
 mutationProbability = 0.025;
 tournamentSelectionParameter = 0.75;
-numberOfGenerations = 500;
+numberOfGenerations = 5000;
 tournamentSize = 10;
 nCopies = 5;
-nRuns = 100;
+nRuns = 500;
 
 globalMaximumFitness = 0;
 globalBestPath = zeros(1,numberOfCities); 

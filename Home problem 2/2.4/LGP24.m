@@ -2,15 +2,14 @@ clear all; clc; clf;
 
 % Variable initialization
 populationSize = 40;
-nGenes = 30;
 mutationProbability = 3;
 tournamentSelectionParameter = 0.75;
 crossoverProbability = 0.8;
-numberOfGenerations = 50000;
+numberOfGenerations = 500000;
 tournamentSize = 6;
 nCopies = 3;
-nRuns = 1000;
-cMax = intmax;
+nRuns = 100000;
+cMax = 10^5;
 minChromosomeLength = 4;
 maxChromosomeLength = 100;
 Dmin = 0.69;
@@ -39,11 +38,10 @@ nMaxSteadyIterations = 5000;
 maxFitnessLastGeneration = 0;
 nSteadyIterations = 0;
 
-
 for j = 1:nRuns
    
     globalMaximumFitness = 0;
-    globalbestChromosome = zeros(1,nGenes); 
+    globalbestChromosome = 0;
     maximumFitness = 0.0;
     
     fitness = zeros(populationSize,1);
@@ -62,7 +60,13 @@ for j = 1:nRuns
         if maximumFitness == maxFitnessLastGeneration
             nSteadyIterations = nSteadyIterations + 1;
             if nSteadyIterations == nMaxSteadyIterations
-                break
+                if foundFunction == 1
+                    f = GetSymbolicFunction(chromosome, numberOfVariables, constantRegister, operators, cMax);
+                    fprintf('The wanted function is %d', f);
+                    return
+                else
+                    break
+                end
             end
         else
             nSteadyIterations = 0;
@@ -77,7 +81,7 @@ for j = 1:nRuns
         end
                 
         maximumFitness = 0.0; % Assumes non-negative fitness values!
-        bestChromosome = zeros(1,nGenes); 
+        bestChromosome = 0; 
         bestIndividualIndex = 0;
         
         % Calculate fitness score for entire population
@@ -93,11 +97,11 @@ for j = 1:nRuns
 
             fitness(i) = GetFitness(chromosome, errors, maxChromosomeLength);
             % Save info about best individual
-                if (fitness(i) > maximumFitness)
-                    maximumFitness = fitness(i);
-                    bestIndividualIndex = i;
-                    bestChromosome = chromosome;
-                end
+            if (fitness(i) > maximumFitness)
+                maximumFitness = fitness(i);
+                bestIndividualIndex = i;
+                bestChromosome = chromosome;
+            end
         end
         
         %Generate new individuals
@@ -145,18 +149,19 @@ for j = 1:nRuns
     
         if maximumFitness > globalMaximumFitness
             globalMaximumFitness = maximumFitness;
-            globalbestChromosome = bestChromosome;
+            globalBestChromosome = bestChromosome;
             
-            fprintf('New global fitness found. Fitness value = %f \n', globalMaximumFitness);
+            fprintf('New global maximum fitness found. Fitness value = %f \n', globalMaximumFitness);
             
             for k = 1:nDataPoints
                 xVal = functionData(k,1);
-                yVals(k) = GetEstimate(globalbestChromosome, xVal, numberOfVariableRegisters, constantRegister, operators, cMax);
+                yVals(k) = GetEstimate(globalBestChromosome, xVal, numberOfVariableRegisters, constantRegister, operators, cMax);
             end
             set(chromosomeHandle, 'YData', yVals)
             drawnow
 
         end
+        
     end
     
 end

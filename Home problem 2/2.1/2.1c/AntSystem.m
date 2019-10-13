@@ -4,7 +4,6 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 for run = 1:15
-    run
     clear all;
     clc;
     clf;
@@ -27,7 +26,7 @@ for run = 1:15
     nearestNeighbourPathLength = GetNearestNeighbourPathLength(cityLocation); 
     tau0 = numberOfAnts/nearestNeighbourPathLength;
 
-    targetPathLength = 123.0;
+    targetPathLength = 122.0;
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Initialization
@@ -46,7 +45,7 @@ for run = 1:15
 
     iIteration = 0;
 
-    while (iIteration < 550)
+    while (minimumPathLength > targetPathLength)
     %while (minimumPathLength > targetPathLength)
      iIteration = iIteration + 1;
 
