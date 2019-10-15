@@ -1,9 +1,9 @@
 function node = GetNode(tabuList, pheromoneLevel, visibility, alpha, beta)
-    
+
     numberOfCities = length(pheromoneLevel);
     probability = zeros(numberOfCities, 1);
     currentCityIndex = tabuList(end);
-    
+
     denominator = 0;
     for l = 1:numberOfCities
         cityVisited = ismember(l, tabuList);
@@ -28,7 +28,7 @@ function node = GetNode(tabuList, pheromoneLevel, visibility, alpha, beta)
 %     r = rand;
 %     summedProbability = 0;
 %     node = 0;
-% 
+%
 %     for i = 1:size(probability)
 %         summedProbability = summedProbability + probability(i);
 %         if r < summedProbability
@@ -37,5 +37,5 @@ function node = GetNode(tabuList, pheromoneLevel, visibility, alpha, beta)
 %         end
 %     end
 
-     
+
 end
