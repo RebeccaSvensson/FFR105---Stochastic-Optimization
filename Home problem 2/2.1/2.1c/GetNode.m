@@ -25,7 +25,17 @@ function node = GetNode(tabuList, pheromoneLevel, visibility, alpha, beta)
     r = rand;
     summedProbability = 0;
     node = 0;
-
+    
+    if denominator == 0 % 
+        for i = 1:size(probability)
+            cityVisited = ismember(l, tabuList);
+            if ~cityVisited
+                node = i;
+            end
+        end
+    end
+ 
+% Byt ut det    
     for i = 1:size(probability)
         summedProbability = summedProbability + probability(i);
         if r < summedProbability
