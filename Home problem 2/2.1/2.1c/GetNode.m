@@ -1,4 +1,5 @@
 function node = GetNode(tabuList, pheromoneLevel, visibility, alpha, beta)
+    
     numberOfCities = length(pheromoneLevel);
     probability = zeros(numberOfCities, 1);
     currentCityIndex = tabuList(end);
@@ -22,17 +23,19 @@ function node = GetNode(tabuList, pheromoneLevel, visibility, alpha, beta)
         end
     end
 
-    r = rand;
-    summedProbability = 0;
-    node = 0;
 
-    for i = 1:size(probability)
-        summedProbability = summedProbability + probability(i);
-        if r < summedProbability
-            node = i;
-            break;
-        end
-    end
+    node = find(rand<cumsum(probability),1,'first');
+%     r = rand;
+%     summedProbability = 0;
+%     node = 0;
+% 
+%     for i = 1:size(probability)
+%         summedProbability = summedProbability + probability(i);
+%         if r < summedProbability
+%             node = i;
+%             break;
+%         end
+%     end
 
      
 end
