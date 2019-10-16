@@ -26,14 +26,13 @@ function node = GetNode(tabuList, pheromoneLevel, visibility, alpha, beta)
     if denominator == 0
         avaliableNodes = setdiff(1:numberOfCities, tabuList);
         numberOfAvaliableNodes = length(avaliableNodes);
-        index = randperm(numberOfAvaliableNodes);
+        index = randperm(numberOfAvaliableNodes, 1);
         node = avaliableNodes(index);
     else
 
         r = rand;
         summedProbability = 0;
         node = 0;
-        prob = sum(probability);
         for i = 1:size(probability)
             summedProbability = summedProbability + probability(i);
             if r < summedProbability
