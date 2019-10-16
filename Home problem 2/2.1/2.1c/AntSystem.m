@@ -46,33 +46,31 @@ minimumPathLength = inf;
 iIteration = 0;
 
 while (minimumPathLength > targetPathLength)
-iIteration = iIteration + 1;
+    iIteration = iIteration + 1;
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Generate paths:
-%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%
+    % Generate paths:
+    %%%%%%%%%%%%%%%%%%%%%%%%%%
 
-pathCollection = [];
-pathLengthCollection = [];
-for k = 1:numberOfAnts
-path = GeneratePath(pheromoneLevel, visibility, alpha, beta);   % To do: Write the GeneratePath function (and any necessary functions called by GeneratePath).
-pathLength = GetPathLength(path,cityLocation);                  
-if (pathLength < minimumPathLength)
-minimumPathLength = pathLength;
-disp(sprintf('Iteration %d, ant %d: path length = %.5f',iIteration,k,minimumPathLength));
-PlotPath(connection,cityLocation,path);
-bestPath = path;
-matlab.io.saveVariablesToScript('BestResultFound.m', 'bestPath');
-end
-pathCollection = [pathCollection; path];           
-pathLengthCollection = [pathLengthCollection; pathLength];
-end
+    pathCollection = [];
+    pathLengthCollection = [];
+    for k = 1:numberOfAnts
+        path = GeneratePath(pheromoneLevel, visibility, alpha, beta); 
+        pathLength = GetPathLength(path,cityLocation);                  
+        if (pathLength < minimumPathLength)
+            minimumPathLength = pathLength;
+            disp(sprintf('Iteration %d, ant %d: path length = %.5f',iIteration,k,minimumPathLength));
+            PlotPath(connection,cityLocation,path);
+        end
+    pathCollection = [pathCollection; path];           
+    pathLengthCollection = [pathLengthCollection; pathLength];
+    end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 % Update pheromone levels
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 
-deltaPheromoneLevel = ComputeDeltaPheromoneLevels(pathCollection,pathLengthCollection);  % To do: write the ComputeDeltaPheromoneLevels function
-pheromoneLevel = UpdatePheromoneLevels(pheromoneLevel,deltaPheromoneLevel,rho);          % To do: write the UpdatePheromoneLevels function
+    deltaPheromoneLevel = ComputeDeltaPheromoneLevels(pathCollection,pathLengthCollection);  
+    pheromoneLevel = UpdatePheromoneLevels(pheromoneLevel,deltaPheromoneLevel,rho);          
 
 end

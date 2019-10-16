@@ -9,7 +9,7 @@ function iSelected = TournamentSelect(fitness, pTournament, tournamentSize)
         tournamentPopulation(2, i) = index;
     end
    
-    [~,idx] = sort(tournamentPopulation(1,:), 'descend'); % sort just the first column
+    [~,idx] = sort(tournamentPopulation(1,:), 'descend'); % sort only the first column
     sortedPop = tournamentPopulation(:,idx);
     
     iSelected = 0;

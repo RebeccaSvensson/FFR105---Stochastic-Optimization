@@ -34,5 +34,5 @@ function f = GetSymbolicFunction(chromosome, numberOfVariables, constantRegister
         
     end
     
-    f = simplify(operands(1))
+    f = simplify(operands(1));
 end

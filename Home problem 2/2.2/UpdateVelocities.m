@@ -13,8 +13,6 @@ function newVelocities = UpdateVelocities(positions, velocities, particleBestPos
             socialComponent = c2*r*((swarmBestPosition(j)-positions(i,j))/deltaT);
             
             newVelocities(i,j) = inertiaWeight*velocities(i,j) + cognitiveComponent + socialComponent;
-
-           % newVelocities(i,j) = inertiaWeight*velocities(i,j) + c1*q*(particleBestPositions(i,j) - positions(i,j))/deltaT + c2*r*(swarmBestPosition(j) - positions(i,j))/deltaT;
             
             if newVelocities(i,j) > maxVelocity
                 newVelocities(i,j) = maxVelocity;

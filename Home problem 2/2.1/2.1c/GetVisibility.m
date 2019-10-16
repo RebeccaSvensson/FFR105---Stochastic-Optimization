@@ -13,5 +13,4 @@
         end
     end
     
-  %  visibility = 1./squareform(pdist(cityLocation));
 end

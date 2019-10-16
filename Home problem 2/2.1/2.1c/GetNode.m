@@ -29,7 +29,6 @@ function node = GetNode(tabuList, pheromoneLevel, visibility, alpha, beta)
         index = randperm(numberOfAvaliableNodes, 1);
         node = avaliableNodes(index);
     else
-
         r = rand;
         summedProbability = 0;
         node = 0;
@@ -40,7 +39,6 @@ function node = GetNode(tabuList, pheromoneLevel, visibility, alpha, beta)
                 break;
             end
         end
-      %  node = find(rand<cumsum(probability),1,'first');
     end
 
 

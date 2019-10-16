@@ -53,12 +53,6 @@ for k = 1:nRuns
     
     positions = UpdatePositions(positions, velocities, deltaT);
 
-%    scatter(positions(:,1), positions(:,2))
-%    xlim([-5 5])
-%    ylim([-5 5])
-%    drawnow
-
-
 end
 
 format long

@@ -1,4 +1,6 @@
 
+addpath('../TSPgraphics')
+
 cityLocation = LoadCityLocations;
 numberOfCities = length(cityLocation);
 
@@ -15,7 +17,7 @@ nearestNeighbourCoordinates = zeros(1, 2);
 nearestNeighbourPathLength = 0;
 
 nCitiesLeftToVisit = size(cityLocation, 1);
-count = 0;
+
 while nCitiesLeftToVisit ~= 0
     shortestDistance = intmax;
 
@@ -40,9 +42,7 @@ while nCitiesLeftToVisit ~= 0
     cityLocation(currentCityIndex,:) = [];
 
     nCitiesLeftToVisit = size(cityLocation, 1);
-    count = count +1 ;
 end
-count = count +1 
 connectingDistance = norm(currentCityCoordinates - startCityCoordinates);
 nearestNeighbourPathLength = nearestNeighbourPathLength + connectingDistance;
     

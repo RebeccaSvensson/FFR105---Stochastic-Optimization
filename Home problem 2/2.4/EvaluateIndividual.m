@@ -1,7 +1,5 @@
-function errors = EvaluateIndividual(chromosome, functionData, constantRegister, variableRegister, operators, cMax)
-    
-    numberOfVariables = length(variableRegister);
-    
+function errors = EvaluateIndividual(chromosome, functionData, constantRegister, numberOfVariables, operators, cMax)
+       
     nDataPoints = length(functionData);
     estimates = zeros(nDataPoints,1);
     

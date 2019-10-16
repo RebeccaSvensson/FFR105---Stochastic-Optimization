@@ -20,7 +20,6 @@ constantRegister = [1, -1, -3];
 numberOfConstantRegisters = length(constantRegister);
 numberOfVariableRegisters = 3;
 numberOfOperands = numberOfVariableRegisters + numberOfConstantRegisters;
-variableRegister = zeros(numberOfVariableRegisters, 1);
 operators = ['+', '-', '*', '/'];
 numberOfOperators = length(operators);
 
@@ -32,8 +31,7 @@ hold on
 dataFunctionHandle = plot(functionData(:,1), functionData(:,2));
 chromosomeHandle = plot(functionData(:,1),zeros(1,201));
 
-% Used to reinitialize if fitness hasn't been updated in
-% nMaxSteadyIterations
+% Used to reinitialize if fitness hasn't been updated in nMaxSteadyIterations
 nMaxSteadyIterations = 5000;
 maxFitnessLastGeneration = 0;
 nSteadyIterations = 0;
@@ -87,7 +85,7 @@ for j = 1:nRuns
         % Calculate fitness score for entire population
         for i = 1:populationSize
             chromosome = population(i).Chromosome;
-            errors = EvaluateIndividual(chromosome, functionData, constantRegister, variableRegister, operators, cMax);
+            errors = EvaluateIndividual(chromosome, functionData, constantRegister, numberOfVariableRegisters, operators, cMax);
             if foundFunction == 0
                 if errors < 0.01
                     matlab.io.saveVariablesToScript('BestChromosomeNew.m', 'bestChromosome');
